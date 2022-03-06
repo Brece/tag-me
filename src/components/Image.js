@@ -1,5 +1,6 @@
 import React from 'react';
 import { imageSrc } from '../helpers/imageSrc';
+import TargetBox from './TargetBox';
 
 const Image = (props) => {
     // TODO: gets chosen image (= index in imageSrc array) as property to display
@@ -18,6 +19,7 @@ const Image = (props) => {
                     <area shape='rect' coords='200,200,50,50' alt='Character one' />
                 </div>
             </map>
+            <TargetBox centerCoord='area coords' />
         </div>
     );
 }
