@@ -1,48 +1,45 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { imageSrc } from '../helpers/imageSrc';
 import TargetBox from './TargetBox';
-
-/*
-Server side in Firebase:
-    -   upload image on firebase or host it somewhere and add an 'URL' key in image object
-    -   compare clicked coordinate with the ones stored in the database
-    -   store picked image data in component's state
-    -   structure: [
-        {
-            IMAGE_ID: xxx,
-            URL: 'xxx',
-            OBJECTS: [
-                {
-                    CHAR_NAME: 'xxx',
-                    COORD_X: [12, 34],
-                    COORD_Y: [62, 84],
-                    DISPLAY: false
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-*/
 
 const Image = (props) => {
     // TODO: gets chosen image (= index in imageSrc array) as property to display
 
-    const handleClick = (e) => {
-        e.preventDefault();
-        e.currentTarget.classList.toggle('isSelected');
-    }
+    const [coordinates, setCoordinates] = useState({x: 25, y: 25});
+
+    // TODO: state for correct choices as coordinates as array which is used to render fixed targetBox with character name
 
     const getMousePosition = (canvas, e) => {
-        let rect = canvas.getBoundingClientRect();
-        let x = e.clientX - rect.left;
-        let y = e.clientY - rect.top;
-        console.log("Coordinate x: " + x, 
-                    "Coordinate y: " + y);
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rightBorder = canvas.width;
+        const bottomBorder = canvas.height;
+        
+        // checks for edge cases
+        const centerCoord = checkBorder(
+            {x,y},
+            {rightBorder, bottomBorder}
+        );
+
+        setCoordinates({x: centerCoord.x, y: centerCoord.y});
+    }
+
+    const checkBorder = (coord, borders) => {
+        let {x, y} = coord;
+        const {rightBorder, bottomBorder} = borders;
+
+        // target box width/height is 50px, so it's center has to be corrected at near the borders
+        if (x < 25) { x = 25 };
+        if (x > rightBorder - 25) { x = rightBorder - 25 }
+        if (y < 25) { y = 25 };
+        if (y > bottomBorder - 25) { y = bottomBorder - 25 }
+
+        return {x,y};
     }
 
     useEffect(() => {
-        const canvasElem = document.querySelector('.c-image');
+        const canvasElem = document.querySelector('.c-image img');
         canvasElem.addEventListener('mousedown', (e) => {
             getMousePosition(canvasElem, e);
         });
@@ -52,20 +49,12 @@ const Image = (props) => {
                 getMousePosition(canvasElem, e);
             });
         }
-    });
+    }, []);
 
     return (
         <div className='o-wrap c-image'>
-            <img src={imageSrc[0].url} alt={imageSrc[0].alt} useMap='#view' />
-            <map name='view' className='c-image__map'>
-                <div className='c-image__map__area' onClick={handleClick} >
-                    <area shape='rect' coords='0,0,50,50' alt='Character one' />
-                </div>
-                <div className='c-image__map__area' onClick={handleClick} >
-                    <area shape='rect' coords='200,200,50,50' alt='Character one' />
-                </div>
-            </map>
-            <TargetBox centerCoord='area coords' />
+            <img src={imageSrc[0].url} alt={imageSrc[0].alt} />
+            <TargetBox coordinates={coordinates} />
         </div>
     );
 }

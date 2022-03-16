@@ -6,8 +6,10 @@ import React from 'react';
 // compare if center position is within area coodinates: X_1 <= X_center <= X_2 && Y_1 <= Y_center <= Y_2
 
 const TargetBox = (props) =>{
+    const {x, y} = props.coordinates;
+    const style = { top: y - 25, left: x - 25 }
     return (
-        <div className='c-targetBox'>
+        <div className='c-targetBox' style={style}>
             box xxx
         </div>
     )
