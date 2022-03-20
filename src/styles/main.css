@@ -83,4 +83,10 @@ body {
   height: 50px;
   border: 2px solid red;
 }
+
+.c-targetBox__form {
+  position: absolute;
+  left: 50px;
+  top: 0;
+}
 /*# sourceMappingURL=main.css.map */

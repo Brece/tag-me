@@ -3,6 +3,7 @@ import Header from './Header';
 import Image from './Image';
 
 const App = () => {
+    /*
     const addWindowClickListener = (e) => {
         e.preventDefault();
         const areaContainerElements = document.querySelectorAll('.c-image__map__area');
@@ -19,6 +20,7 @@ const App = () => {
 
         return () => window.removeEventListener('click', addWindowClickListener);
     }, []);
+    */
 
     return (
         <div className='c-app'>

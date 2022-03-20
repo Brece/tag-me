@@ -6,6 +6,7 @@ const Image = (props) => {
     // TODO: gets chosen image (= index in imageSrc array) as property to display
 
     const [coordinates, setCoordinates] = useState({x: 25, y: 25});
+    const [boxDisplayed, setBoxDisplayed] = useState('none');
 
     // TODO: state for correct choices as coordinates as array which is used to render fixed targetBox with character name
 
@@ -23,6 +24,7 @@ const Image = (props) => {
         );
 
         setCoordinates({x: centerCoord.x, y: centerCoord.y});
+        setBoxDisplayed('block');
     }
 
     const checkBorder = (coord, borders) => {
@@ -53,8 +55,8 @@ const Image = (props) => {
 
     return (
         <div className='o-wrap c-image'>
-            <img src={imageSrc[0].url} alt={imageSrc[0].alt} />
-            <TargetBox coordinates={coordinates} />
+            <img src={imageSrc[0].URL} alt={imageSrc[0].ALT} />
+            <TargetBox coordinates={coordinates} display={boxDisplayed} options={imageSrc[0].OBJECTS} />
         </div>
     );
 }

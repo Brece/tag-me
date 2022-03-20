@@ -9,8 +9,8 @@ Server side in Firebase:
             OBJECTS: [
                 {
                     CHAR_NAME: 'xxx',
-                    COORD_X: [12, 34],
-                    COORD_Y: [62, 84],
+                    COORD_X: 12,
+                    COORD_Y: 84,
                     DISPLAY: false
                 },
                 ...
