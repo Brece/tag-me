@@ -11,17 +11,28 @@ const TargetBox = (props) =>{
     const {x, y} = props.coordinates;
     const style = { display: props.display, top: y - 25, left: x - 25 }
 
+    // TODO: submit to server
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const value = e.currentTarget.firstChild.value;
+        console.log(value);
+    }
+
+    // FIXME: display radio or only the label?
     const renderOptions = () => {
-        return (
-            props.options.map((item, index) => {
-                return (
-                    <div key={index} style={{display: item.DISPLAY ? 'block' : 'none'}}>
-                        <input type='radio' id={item.CHAR_NAME} name='character' value={item.CHAR_NAME} />
+        if (props.options) {
+            return (
+                props.options.map((item, index) => {
+                    return (
+                        <div key={index} style={{display: item.DISPLAY ? 'block' : 'none'}} onClick={handleSubmit}>
+                        <input type='radio' id={item.CHAR_NAME} name='character' value={item.CHAR_NAME} style={{display: 'none'}} />
                         <label htmlFor={item.CHAR_NAME}>{item.CHAR_NAME}</label>
                     </div>
-                )
-            })
-        );
+                    )
+                })
+            );
+        }
     }
 
     return (

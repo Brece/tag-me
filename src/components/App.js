@@ -1,31 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import Image from './Image';
+import { getImage } from '../firebase';
 
 const App = () => {
-    /*
-    const addWindowClickListener = (e) => {
-        e.preventDefault();
-        const areaContainerElements = document.querySelectorAll('.c-image__map__area');
-        console.log(areaContainerElements);
-        areaContainerElements.forEach((item) => {
-            if (item.classList.contains('isSelected')) {   
-                //item.classList.remove('isSelected');
-            }
-        });
+    // TODO: state for selected image to be displayed in Image component
+    const [selected, setSelected] = useState('');
+    const [image, setImage] = useState({});
+
+    const handleChange = (e) => {
+        console.log(e.target.value);
+        setSelected(e.target.value);
     }
 
-    useEffect(() => {
-        document.querySelector('body').addEventListener('click', addWindowClickListener);
-
-        return () => window.removeEventListener('click', addWindowClickListener);
-    }, []);
-    */
+    async function handleSubmit(e) {
+        e.preventDefault();
+        console.log('submitted');
+        setImage(await getImage(selected));
+    }
 
     return (
         <div className='c-app'>
-            <Header />
-            <Image />
+            <Header handleChange={handleChange} handleSubmit={handleSubmit}/>
+            <Image image={image}/>
         </div>
     );
 }

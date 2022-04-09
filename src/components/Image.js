@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { imageSrc } from '../helpers/imageSrc';
 import TargetBox from './TargetBox';
 
 const Image = (props) => {
@@ -7,6 +6,7 @@ const Image = (props) => {
 
     const [coordinates, setCoordinates] = useState({x: 25, y: 25});
     const [boxDisplayed, setBoxDisplayed] = useState('none');
+    const [image, setImage] = useState({...props.image});
 
     // TODO: state for correct choices as coordinates as array which is used to render fixed targetBox with character name
 
@@ -40,11 +40,14 @@ const Image = (props) => {
         return {x,y};
     }
 
-    useEffect(() => {
+    useEffect(() => {        
         const canvasElem = document.querySelector('.c-image img');
-        canvasElem.addEventListener('mousedown', (e) => {
-            getMousePosition(canvasElem, e);
-        });
+
+        if (canvasElem !== null) {
+            canvasElem.addEventListener('mousedown', (e) => {
+                getMousePosition(canvasElem, e);
+            });
+        }
 
         return () => {
             canvasElem.removeEventListener('mousedown', (e) => {
@@ -53,12 +56,20 @@ const Image = (props) => {
         }
     }, []);
 
-    return (
-        <div className='o-wrap c-image'>
-            <img src={imageSrc[0].URL} alt={imageSrc[0].ALT} />
-            <TargetBox coordinates={coordinates} display={boxDisplayed} options={imageSrc[0].OBJECTS} />
-        </div>
-    );
+    const ImageContainer = () => {
+        if (image !== undefined) {
+            return (
+                <div className='o-wrap c-image'>
+                    <img src={image.URL} alt={image.ALT} />
+                    <TargetBox coordinates={coordinates} display={boxDisplayed} options={image.OBJECTS} />
+                </div>
+            )
+        }
+
+        return '';
+    }
+
+    return <ImageContainer />;
 }
 
 export default Image;
